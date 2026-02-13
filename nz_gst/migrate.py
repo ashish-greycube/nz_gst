@@ -11,7 +11,9 @@ def after_migration():
                 "insert_after": "default_operating_cost_account",
                 "label": "GST",
                 "is_custom_field":1,
-                "is_system_generated":0
+                "is_system_generated":0,
+                "reqd":0,
+                "depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_default_account_for_gst_collected",
@@ -20,7 +22,9 @@ def after_migration():
                 "options": "Account",
                 "insert_after": "custom_gst_tab",
                 "is_custom_field":1,
-                "is_system_generated":0
+                "is_system_generated":0,
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_gst_column",
@@ -36,7 +40,9 @@ def after_migration():
                 "options": "Account",
                 "insert_after": "custom_gst_column",
                 "is_custom_field":1,
-                "is_system_generated":0
+                "is_system_generated":0,
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_item_tax_template_section",
@@ -62,7 +68,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_pt1",
@@ -72,7 +79,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_pt0",
@@ -82,7 +90,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_sales_tax_col",
@@ -100,7 +109,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_st1",
@@ -110,7 +120,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_st0",
@@ -120,7 +131,8 @@ def after_migration():
                 "options": "Item Tax Template",
                 "is_custom_field":1,
                 "is_system_generated":0,
-                "reqd": 1
+                "reqd":0,
+                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
 
         ]
