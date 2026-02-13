@@ -8,7 +8,15 @@ frappe.query_reports["GST Report"] = {
 			fieldtype: "Link",
 			label: "Company",
 			options: "Company",
-			default: frappe.defaults.get_user_default("Company")
+			default: frappe.defaults.get_user_default("Company"),
+			reqd: 1,
+			get_query: function() {
+				return {
+					filters: {
+						"default_currency": "NZD"
+					}
+				}
+			}
 		},
 		{
 			fieldname: "from_date",

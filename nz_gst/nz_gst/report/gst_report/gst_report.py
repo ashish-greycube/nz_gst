@@ -105,14 +105,17 @@ def get_columns(filters):
 def get_data(filters):
 	res = []
 
-	gst_doc = frappe.get_doc("O2Z GST Settings")
+	gst_doc = frappe.get_doc("Company", filters.get("company"))
 
-	exempt_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.pt2)
-	exempt_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.st2)
-	gst_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.pt1)
-	get_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.st1)
-	zero_rated_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.pt0)
-	zero_rated_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.st0)
+	if not gst_doc.get("custom_pt2"):
+		frappe.throw(_("Set Sales & Purchase Item Tax Templates In Company {0} to fetch data.").format(filters.get("company")))
+
+	exempt_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_pt2"))
+	exempt_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_st2"))
+	gst_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_pt1"))
+	get_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_st1"))
+	zero_rated_pi = get_purchase_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_pt0"))
+	zero_rated_si = get_sales_invoice_data_with_item_tax_template(filters, gst_doc.get("custom_st0"))
 
 	if filters.get("view_type") == "Detailed":
 		# if not gst_doc.pt2:
