@@ -13,7 +13,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": ""
+                "depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
             },
             {
                 "fieldname":"custom_default_account_for_gst_collected",
