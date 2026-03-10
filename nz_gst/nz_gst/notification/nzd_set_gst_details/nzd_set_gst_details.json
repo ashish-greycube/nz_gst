@@ -1,0 +1,30 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.default_currency==\"NZD\"",
+ "creation": "2026-03-10 19:39:29.285690",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Company",
+ "enabled": 1,
+ "event": "New",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Kindly set up <b>GST Accounts</b> and <b>Item Tax Templates</b> for the <b>{{ doc.name }}</b> company.",
+ "message_type": "HTML",
+ "modified": "2026-03-10 20:10:50.676921",
+ "modified_by": "Administrator",
+ "module": "Nz Gst",
+ "name": "NZD Set GST Details",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "owner"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 0,
+ "subject": "GST Setup for {{ doc.name }} Company"
+}

@@ -43,22 +43,33 @@ def get_columns(filters):
 				width = 200
 			),
 			dict(
+				fieldname = 'company_currency',
+				fieldtype = "Link",
+				label = "Company Currecy",
+				options = "Currency",
+				width = 200,
+				hidden = 1
+			),
+			dict(
 				fieldname = 'excl_gst',
 				fieldtype = "Currency",
 				label = "Excl GST",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 			dict(
 				fieldname = 'gst',
 				fieldtype = "Currency",
 				label = "GST",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 			dict(
 				fieldname = 'incl_gst',
 				fieldtype = "Currency",
 				label = "Incl GST",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 			dict(
 				fieldname = 'partner',
@@ -69,6 +80,14 @@ def get_columns(filters):
 		]
 	if filters.get("view_type") == "Summary":
 		columns = [
+			dict(
+				fieldname = 'company_currency',
+				fieldtype = "Link",
+				label = "Company Currecy",
+				options = "Currency",
+				width = 200,
+				hidden = 1
+			),
 			dict(
 				fieldname = 'summary_section',
 				fieldtype = "Data",
@@ -85,19 +104,22 @@ def get_columns(filters):
 				fieldname = 'value_excl',
 				fieldtype = "Currency",
 				label = "Value Excl",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 			dict(
 				fieldname = 'gst',
 				fieldtype = "Currency",
 				label = "GST",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 			dict(
 				fieldname = 'value_incl',
 				fieldtype = "Currency",
 				label = "Value Incl",
-				width = 150
+				width = 150,
+				options = 'company_currency'
 			),
 		]
 	return columns
@@ -205,6 +227,7 @@ def get_data(filters):
 
 		if len(exempt_pi) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "PT2",
 				"category" : "Exempt purchases",
 				"value_excl" : exempt_pi[-1]['excl_gst'],
@@ -221,6 +244,7 @@ def get_data(filters):
 
 		if len(exempt_si) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "ST2",
 				"category" : "Exempt sales",
 				"value_excl" : exempt_si[-1]['excl_gst'],
@@ -237,6 +261,7 @@ def get_data(filters):
 		
 		if len(gst_pi) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "PT1",
 				"category" : "Purchase 15%",
 				"value_excl" : gst_pi[-1]['excl_gst'],
@@ -253,6 +278,7 @@ def get_data(filters):
 
 		if len(get_si) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "ST1",
 				"category" : "Standard rate sales (15%)",
 				"value_excl" : get_si[-1]['excl_gst'],
@@ -269,6 +295,7 @@ def get_data(filters):
 
 		if len(zero_rated_pi) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "PT0",
 				"category" : "Zero rated purchases",
 				"value_excl" : zero_rated_pi[-1]['excl_gst'],
@@ -285,6 +312,7 @@ def get_data(filters):
 
 		if len(zero_rated_si) > 0:
 			d = {
+				"company_currency" : gst_doc.default_currency,
 				"summary_section" : "ST0",
 				"category" : "Zero rated sales",
 				"value_excl" : zero_rated_si[-1]['excl_gst'],
@@ -300,6 +328,7 @@ def get_data(filters):
 			res.append(d)
 
 		res.append({
+			"company_currency": gst_doc.default_currency,
 			"category" : "Total",
 			"value_excl" : total_val_excl,
 			"gst" : total_gst,
@@ -313,6 +342,7 @@ def get_data(filters):
 		})
 
 		res.append({
+			"company_currency": gst_doc.default_currency,
 			"summary_section" : "GL Movement",
 			"category": "GST Collected",
 			"value_excl" : -total_gst_collected if total_gst_collected != 0 else 0,
@@ -321,6 +351,7 @@ def get_data(filters):
 		})
 
 		res.append({
+			"company_currency": gst_doc.default_currency,
 			"category": "GST Paid",
 			"value_excl" : -total_gst_paid if total_gst_paid != 0 else 0,
 			"gst" : None,
@@ -328,6 +359,7 @@ def get_data(filters):
 		})
 		
 		res.append({
+			"company_currency": gst_doc.default_currency,
 			"category": "Nett",
 			"value_excl" : (-total_gst_collected + (-total_gst_paid)),
 			"gst" : None,
@@ -346,6 +378,7 @@ def get_sales_invoice_data_with_item_tax_template(filters, tax_template):
 				si.posting_date AS date, 
 				si.name AS invoice_ref,
 				si.name AS transaction_ref,
+				si.currency AS company_currency,
 				IF(SUM(tsi.base_net_amount) > 0, SUM(tsi.base_net_amount), null) AS excl_gst,
 				SUM(tsi.base_net_amount) AS excl_gst11,
 				(SUM(tsi.base_net_amount) * (itt.tax_rate/100))  AS gst,
@@ -371,11 +404,15 @@ def get_sales_invoice_data_with_item_tax_template(filters, tax_template):
 		total_gst = 0
 		total_excl_gst = 0
 		total_incl_gst = 0
+		company_currency = ""
 		for d in data:
+			company_currency = d.company_currency
 			total_gst = total_gst + d.gst
 			total_excl_gst = total_excl_gst + d.excl_gst
 			total_incl_gst = total_incl_gst + d.incl_gst
+
 		data.append({
+			"company_currency" : company_currency,
 			"date": "Total",
 			"excl_gst": total_excl_gst,
 			"gst": total_gst,
@@ -390,6 +427,7 @@ def get_purchase_invoice_data_with_item_tax_template(filters, tax_template):
 				pi.posting_date AS date, 
 				pi.name AS invoice_ref,
 				pi.name AS transaction_ref,
+				pi.currency AS company_currency,
 				-1 * SUM(tpi.base_net_amount) AS excl_gst,
 				-1 * (SUM(tpi.base_net_amount) * (itt.tax_rate/100)) AS gst,
 				-1 * (SUM(tpi.base_net_amount) + (SUM(tpi.base_net_amount) * (itt.tax_rate/100)) ) AS incl_gst,
@@ -414,11 +452,14 @@ def get_purchase_invoice_data_with_item_tax_template(filters, tax_template):
 		total_gst = 0
 		total_excl_gst = 0
 		total_incl_gst = 0
+		company_currency = ""
 		for d in data:
+			company_currency = d.company_currency
 			total_gst = total_gst + d.gst
 			total_excl_gst = total_excl_gst + d.excl_gst
 			total_incl_gst = total_incl_gst + d.incl_gst
 		data.append({
+			"company_currency" : company_currency,
 			"date": "Total",
 			"excl_gst": total_excl_gst,
 			"gst": total_gst,
@@ -430,6 +471,7 @@ def get_purchase_invoice_data_with_item_tax_template(filters, tax_template):
 def get_gl_balances_rows(res, filters):
 	default_account_for_gst_collected = frappe.get_value("Company", filters.get("company"), "custom_default_account_for_gst_collected")
 	default_account_for_gst_paid = frappe.get_value("Company", filters.get("company"), "custom_default_account_for_gst_paid")
+	default_currency = frappe.get_value("Company", filters.get("company"), "default_currency")
 
 	collected_balance = get_balance_on(account = default_account_for_gst_collected, company = filters.get("company"))
 	paid_balance = get_balance_on(account = default_account_for_gst_paid, company = filters.get("company"))
@@ -441,6 +483,7 @@ def get_gl_balances_rows(res, filters):
 	})
 
 	res.append({
+		"company_currency": default_currency,
 		"summary_section" : "GL Balances",
 		"category": "GST Collected",
 		"value_excl" : collected_balance if collected_balance else 0,
@@ -449,6 +492,7 @@ def get_gl_balances_rows(res, filters):
 	})
 
 	res.append({
+		"company_currency": default_currency,
 		"category": "GST Paid",
 		"value_excl" : paid_balance if paid_balance else 0,
 		"gst" : None,
@@ -456,6 +500,7 @@ def get_gl_balances_rows(res, filters):
 	})
 
 	res.append({
+		"company_currency": default_currency,
 		"category": "Balance",
 		"value_excl" : (collected_balance + paid_balance) if collected_balance and paid_balance else 0,
 		"gst" : None,

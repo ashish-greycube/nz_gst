@@ -13,7 +13,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_default_account_for_gst_collected",
@@ -24,7 +24,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_gst_column",
@@ -42,7 +42,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_item_tax_template_section",
@@ -69,7 +69,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_pt1",
@@ -80,7 +80,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_pt0",
@@ -91,7 +91,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_sales_tax_col",
@@ -110,7 +110,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_st1",
@@ -121,7 +121,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
             {
                 "fieldname":"custom_st0",
@@ -132,7 +132,7 @@ def after_migration():
                 "is_custom_field":1,
                 "is_system_generated":0,
                 "reqd":0,
-                "mandatory_depends_on": "eval:doc.default_currency == 'NZD' || doc.default_currency == 'AUD'"
+                "mandatory_depends_on": ""
             },
 
         ]
